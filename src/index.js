@@ -21,8 +21,8 @@ import { Route, Router, hashHistory } from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-import { initStore } from '@parity/shared/redux';
-import ContextProvider from '@parity/ui/ContextProvider';
+import { initStore } from '@parity/shared/lib/redux';
+import ContextProvider from '@parity/ui/lib/ContextProvider';
 
 import api from './api';
 import DappAccounts from './dappAccounts';
