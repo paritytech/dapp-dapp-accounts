@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render correctly in when hidden 1`] = `
+<Card
+  className=" "
+  onClick={[Function]}
+>
+  <CardContent>
+    <Image
+      address="123"
+      as={[Function]}
+      floated="right"
+      size="mini"
+      ui={true}
+    />
+    <CardHeader>
+      <IdentityName
+        address="123"
+        name="Foo"
+        unknown={true}
+      />
+    </CardHeader>
+    <CardMeta>
+      123
+    </CardMeta>
+    <CardDescription>
+      <p>
+        Bar
+      </p>
+      <p>
+        <FormattedMessage
+          defaultMessage="Balance"
+          id="dapp.accounts.balance"
+          values={Object {}}
+        />
+        : 
+        <EtherBalance
+          balance="Bond of 123"
+        />
+      </p>
+    </CardDescription>
+  </CardContent>
+  <CardContent
+    extra={true}
+    textAlign="center"
+  >
+    <Label>
+      <FormattedMessage
+        defaultMessage="Hidden"
+        id="dapp.accounts.hidden"
+        values={Object {}}
+      />
+    </Label>
+  </CardContent>
+</Card>
+`;
+
+exports[`should render correctly in when isDefault 1`] = `
+<Card
+  className=" "
+  onClick={null}
+>
+  <CardContent>
+    <Image
+      address="123"
+      as={[Function]}
+      floated="right"
+      size="mini"
+      ui={true}
+    />
+    <CardHeader>
+      <IdentityName
+        address="123"
+        name="Foo"
+        unknown={true}
+      />
+    </CardHeader>
+    <CardMeta>
+      123
+    </CardMeta>
+    <CardDescription>
+      <p>
+        Bar
+      </p>
+      <p>
+        <FormattedMessage
+          defaultMessage="Balance"
+          id="dapp.accounts.balance"
+          values={Object {}}
+        />
+        : 
+        <EtherBalance
+          balance="Bond of 123"
+        />
+      </p>
+    </CardDescription>
+  </CardContent>
+</Card>
+`;

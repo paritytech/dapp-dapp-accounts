@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render correctly 1`] = `
+<Page
+  title={
+    <FormattedMessage
+      defaultMessage="Accounts visible to Dapps"
+      id="dapps.accounts.title"
+      values={Object {}}
+    />
+  }
+>
+  <div>
+    <Header
+      as="h4"
+    >
+      Default Account
+    </Header>
+    <span>
+      This is your default account to be used in the Dapps. It is also the account shown on the top bar.
+    </span>
+    <CardGroup>
+      <AccountCard
+        account={
+          Object {
+            "meta": Object {},
+            "name": "FooName",
+          }
+        }
+        address="foo"
+        isDefault={true}
+        isVisible={true}
+      />
+    </CardGroup>
+  </div>
+  <div>
+    <Header
+      as="h4"
+    >
+      Other Accounts
+    </Header>
+    <span>
+      These are the other accounts that can be accessed by Dapps. Toggle them to make them visible/hidden for Dapps.
+    </span>
+    <CardGroup>
+      <AccountCard
+        account={
+          Object {
+            "meta": Object {},
+            "name": "BarName",
+          }
+        }
+        address="bar"
+        isVisible={true}
+        key="bar"
+        onMakeDefault={[Function]}
+        onToggleVisible={[Function]}
+      />
+      <AccountCard
+        account={
+          Object {
+            "meta": Object {},
+            "name": "BazName",
+          }
+        }
+        address="baz"
+        isVisible={false}
+        key="baz"
+        onMakeDefault={[Function]}
+        onToggleVisible={[Function]}
+      />
+    </CardGroup>
+  </div>
+</Page>
+`;
+
+exports[`should render correctly when no account 1`] = `""`;

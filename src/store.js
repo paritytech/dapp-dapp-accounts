@@ -29,24 +29,27 @@ export default class Store {
     this.load();
   }
 
+  // FIXME: Hardware accounts are not showing up here
+  setAccounts = action(accounts => {
+    this.accounts = accounts;
+  });
+
   setDefault = action(address => {
     this.default = address;
   });
 
   saveDefault = action(address => {
     this.setDefault(address);
-    return this._api.parity
-      .setNewDappsDefaultAddress(address)
-      .catch(console.warn);
+    return this._api.parity.setNewDappsDefaultAddress(address);
   });
 
   setVisible = action(visible => {
-    this.visible = visible;
+    this.visible = visible === null ? Object.keys(this.accounts) : visible; // If visible is null, it means all dapps are visible
   });
 
   saveVisible = action(visible => {
     this.setVisible(visible);
-    this._api.parity.setNewDappsAddresses(visible).catch(console.warn);
+    this._api.parity.setNewDappsAddresses(visible);
   });
 
   showAccount = action(address => {
@@ -57,24 +60,15 @@ export default class Store {
     this.saveVisible(this.visible.filter(a => a !== address));
   });
 
-  // FIXME: Hardware accounts are not showing up here
-  setAccounts = action(accounts => {
-    this.accounts = accounts;
-  });
-
   load() {
     return Promise.all([
       this._api.parity.allAccountsInfo(),
       this._api.parity.getNewDappsAddresses(),
       this._api.parity.getNewDappsDefaultAddress()
-    ])
-      .then(([accounts, visible, defaultAddress]) => {
-        this.setAccounts(accounts);
-        this.setVisible(visible || Object.keys(accounts)); // When all account are visible, the response from the API is null
-        this.setDefault(defaultAddress);
-      })
-      .catch(error => {
-        console.warn('load', error);
-      });
+    ]).then(([accounts, visible, defaultAddress]) => {
+      this.setAccounts(accounts);
+      this.setVisible(visible);
+      this.setDefault(defaultAddress);
+    });
   }
 }
