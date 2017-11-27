@@ -21,99 +21,45 @@ export default class Store {
     this._api = api;
 
     extendObservable(this, {
-      accounts: [], // All accounts with info
+      accounts: {}, // All accounts with info (maps address to account info)
       visible: [], // Array of visible accounts' addresses
-      default: null // Address of default account
+      default: null // Default account address
     });
 
     this.load();
   }
 
-  save = () => {
-    const checkedAccounts = this.accounts.filter(account => account.checked);
-    const defaultAddress = (this.accounts.find(account => account.default) || {}
-    ).address;
-    const addresses =
-      checkedAccounts.length === this.accounts.length
-        ? null
-        : checkedAccounts.map(account => account.address);
+  setDefault = action(address => {
+    this.default = address;
+  });
 
-    this.updateWhitelist(addresses, defaultAddress);
-  };
+  saveDefault = action(address => {
+    this.setDefault(address);
+    return this._api.parity
+      .setNewDappsDefaultAddress(address)
+      .catch(console.warn);
+  });
+
+  setVisible = action(visible => {
+    this.visible = visible;
+  });
+
+  saveVisible = action(visible => {
+    this.setVisible(visible);
+    this._api.parity.setNewDappsAddresses(visible).catch(console.warn);
+  });
+
+  showAccount = action(address => {
+    this.saveVisible(this.visible.concat(address));
+  });
+
+  hideAccount = action(address => {
+    this.saveVisible(this.visible.filter(a => a !== address));
+  });
 
   // FIXME: Hardware accounts are not showing up here
   setAccounts = action(accounts => {
-    this.accounts = Object.keys(accounts)
-      .filter(address => {
-        const account = accounts[address];
-
-        if (account.uuid) {
-          return true;
-        } else if (account.meta.hardware) {
-          account.hardware = true;
-          return true;
-        } else if (account.meta.external) {
-          account.external = true;
-          return true;
-        }
-
-        return false;
-      })
-      .map((address, index) => {
-        const account = accounts[address];
-
-        return {
-          address,
-          checked: this.whitelist ? this.whitelist.includes(address) : true,
-          default: this.whitelistDefault
-            ? this.whitelistDefault === address
-            : index === 0,
-          description: account.meta.description,
-          name: account.name
-        };
-      });
-  });
-
-  selectAccount = action(address => {
-    const isSingleAccount =
-      this.accounts.filter(account => account.checked).length === 1;
-
-    this.accounts = this.accounts.map(account => {
-      if (
-        account.address === address &&
-        (!isSingleAccount || !account.checked)
-      ) {
-        account.checked = !account.checked;
-        account.default = false;
-      }
-
-      return account;
-    });
-
-    this.setDefaultAccount(
-      (this.accounts.find(account => account.default) ||
-        this.accounts.find(account => account.checked) ||
-        {}
-      ).address
-    );
-  });
-
-  setDefaultAccount = action(address => {
-    this.accounts = this.accounts.map(account => {
-      if (account.address === address) {
-        account.checked = true;
-        account.default = true;
-      } else if (account.default) {
-        account.default = false;
-      }
-
-      return account;
-    });
-  });
-
-  setWhitelist = action((whitelist, whitelistDefault) => {
-    this.whitelist = whitelist;
-    this.whitelistDefault = whitelistDefault;
+    this.accounts = accounts;
   });
 
   load() {
@@ -122,26 +68,13 @@ export default class Store {
       this._api.parity.getNewDappsAddresses(),
       this._api.parity.getNewDappsDefaultAddress()
     ])
-      .then(([accounts, whitelist, whitelistDefault]) => {
-        console.log(accounts, whitelist, whitelistDefault);
-        this.setWhitelist(whitelist, whitelistDefault);
+      .then(([accounts, visible, defaultAddress]) => {
         this.setAccounts(accounts);
+        this.setVisible(visible || Object.keys(accounts)); // When all account are visible, the response from the API is null
+        this.setDefault(defaultAddress);
       })
       .catch(error => {
         console.warn('load', error);
-      });
-  }
-
-  updateWhitelist(whitelist, whitelistDefault = null) {
-    return Promise.all([
-      this._api.parity.setNewDappsAddresses(whitelist),
-      this._api.parity.setNewDappsDefaultAddress(whitelistDefault)
-    ])
-      .then(() => {
-        this.setWhitelist(whitelist, whitelistDefault);
-      })
-      .catch(error => {
-        console.warn('updateWhitelist', error);
       });
   }
 }

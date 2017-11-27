@@ -15,7 +15,10 @@
 /* along with Parity.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-:local(.cardGroup) {
-  margin-top: 10px !important;
-  margin-bottom: 20px !important;
+:local(.accountCard) {
+  width: 420px !important;
+}
+
+:local(.hidden) {
+  opacity: 0.3;
 }
