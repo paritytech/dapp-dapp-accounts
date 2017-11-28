@@ -22,3 +22,8 @@
 :local(.hidden) {
   opacity: 0.3;
 }
+
+/* Somehoe these buttons get flattened out, so we enforce a height */
+.extra .button {
+  height: 36px;
+}

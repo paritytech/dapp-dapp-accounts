@@ -14,6 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Parity.  If not, see <http://www.gnu.org/licenses/>.
 
+//
+
+// TODO
+// IMPORTANT!!!
+// This file is a copy of https://github.com/paritytech/parity-reactive-ui/pull/18
+// It should be removed after the PR gets merged
+
 import React from 'react';
 import { BigNumber } from 'bignumber.js';
 import { ReactiveComponent } from 'oo7-react';

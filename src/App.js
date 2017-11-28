@@ -18,7 +18,8 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import Page from '@parity/ui/lib/Page';
+
+import ActionBar from '@parity/ui/lib/Actionbar/actionbar';
 import Header from 'semantic-ui-react/dist/commonjs/elements/Header';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 
@@ -46,14 +47,15 @@ class App extends Component {
     if (!Object.keys(store.accounts) || !store.default) return null;
 
     return (
-      <Page
-        title={
-          <FormattedMessage
-            id="dapps.accounts.title"
-            defaultMessage="Accounts visible to Dapps"
-          />
-        }
-      >
+      <div className={styles.layout}>
+        <ActionBar
+          title={
+            <FormattedMessage
+              id="dapps.accounts.title"
+              defaultMessage="Accounts Visible to Dapps"
+            />
+          }
+        />
         <div className={styles.section}>
           <Header as="h4">Default Account</Header>
           <span>
@@ -90,7 +92,7 @@ class App extends Component {
               ))}
           </Card.Group>
         </div>
-      </Page>
+      </div>
     );
   }
 }

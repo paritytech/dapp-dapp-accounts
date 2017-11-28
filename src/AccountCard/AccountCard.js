@@ -17,9 +17,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { bonds } from 'oo7-parity';
 
 // TODO Wait for PR#18 on parity-reactive-ui for dependency
+import { bonds } from 'oo7-parity';
 import EtherBalance from '../vendor/EtherBalance';
 
 import IdentityIcon from '@parity/ui/lib/IdentityIcon';

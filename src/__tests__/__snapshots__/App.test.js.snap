@@ -1,15 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`should render correctly 1`] = `
-<Page
-  title={
-    <FormattedMessage
-      defaultMessage="Accounts visible to Dapps"
-      id="dapps.accounts.title"
-      values={Object {}}
-    />
-  }
->
+<div>
+  <Actionbar
+    title={
+      <FormattedMessage
+        defaultMessage="Accounts Visible to Dapps"
+        id="dapps.accounts.title"
+        values={Object {}}
+      />
+    }
+  />
   <div>
     <Header
       as="h4"
@@ -71,7 +72,7 @@ exports[`should render correctly 1`] = `
       />
     </CardGroup>
   </div>
-</Page>
+</div>
 `;
 
 exports[`should render correctly when no account 1`] = `""`;
