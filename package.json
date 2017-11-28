@@ -11,6 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/paritytech/dapp-dapp-visible.git"
   },
+  "homepage": "./",
   "proxy": {
     "/parity-utils": {
       "target": "http://127.0.0.1:3000"

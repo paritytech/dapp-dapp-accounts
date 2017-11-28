@@ -4,6 +4,6 @@
   "description": "Allow setting of accounts to be used by default by dapps",
   "author": "Parity Team <admin@parity.io>",
   "version": "2.0.0",
-  "iconUrl": "icon.jpg",
+  "iconUrl": "icon.png",
   "localUrl": "http://localhost:3001"
 }

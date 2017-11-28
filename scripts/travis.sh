@@ -21,32 +21,38 @@ git config push.default simple
 git config merge.ours.driver true
 git config user.name "Travis CI"
 git config user.email "$COMMIT_AUTHOR_EMAIL"
+git remote set-url origin https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git > /dev/null 2>&1
 
 echo "Bumping package version"
 
-git remote set-url origin https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git > /dev/null 2>&1
 npm --no-git-tag-version version
-npm version patch -m "[CI Skip] Version bump"
+npm version patch -m "[CI Skip] %s"
 git push --quiet origin HEAD:refs/heads/$TRAVIS_BRANCH > /dev/null 2>&1
 
-echo "Publishing build"
-
+UTCDATE=`date -u "+%Y%m%d-%H%M%S"`
 PACKAGE_VERSION=$(cat package.json \
   | grep version \
   | head -1 \
   | awk -F: '{ print $2 }' \
   | sed 's/[",]//g')
+VERSION="${PACKAGE_VERSION} (${UTCDATE})"
 
-git clone https://github.com/dist-${TRAVIS_REPO_SLUG}-dist.git dist
+echo "Cloning dist repo"
+git clone https://github.com/js-dist-${TRAVIS_REPO_SLUG}.git dist
 cd dist
-git remote set-url origin https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}-dist.git > /dev/null 2>&1
+git remote set-url origin https://${GH_TOKEN}@github.com/js-dist-${TRAVIS_REPO_SLUG}.git > /dev/null 2>&1
 git checkout $TRAVIS_BRANCH
-rm -rf static
-cp -rf ../build/ .
+
+echo "Copying build output"
+rm -rf build static
+cp -rf ../build/* .
 cp -f ../icon.png ../package.json .
 sed "s/VERSION/$PACKAGE_VERSION/" < ../manifest.json >manifest.json
+
+echo "Adding to git"
+echo "$VERSION" >README.md
 git add .
-git commit -m "Version $PACKAGE_VERSION"
+git commit -m "$VERSION"
 git push --quiet origin HEAD:refs/heads/$TRAVIS_BRANCH > /dev/null 2>&1
 cd ..
 
